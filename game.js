@@ -113,9 +113,25 @@ class Game {
         const screens = document.querySelectorAll('.screen');
         screens.forEach(screen => screen.classList.remove('active'));
         
-        const targetScreen = document.getElementById(screenId);
-        if (targetScreen) {
-            targetScreen.classList.add('active');
+        const gameUI = document.getElementById('game-ui');
+        const windIndicator = document.getElementById('wind-indicator');
+        
+        if (screenId === 'game-playing') {
+            if (gameUI) gameUI.style.display = 'block';
+            if (windIndicator) windIndicator.style.display = 'block';
+        } else if (screenId === 'game-paused') {
+            if (gameUI) gameUI.style.display = 'block';
+            if (windIndicator) windIndicator.style.display = 'block';
+            const pauseScreen = document.getElementById('pause-screen');
+            if (pauseScreen) pauseScreen.classList.add('active');
+        } else {
+            if (gameUI) gameUI.style.display = 'none';
+            if (windIndicator) windIndicator.style.display = 'none';
+            
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
         }
     }
     
@@ -146,7 +162,7 @@ class Game {
         
         this.updateUI();
         
-        this.showScreen('game-ui');
+        this.showScreen('game-playing');
         this.gameState = 'playing';
         
         if (this.animationFrameId) {
@@ -159,13 +175,13 @@ class Game {
     pauseGame() {
         if (this.gameState === 'playing') {
             this.gameState = 'paused';
-            this.showScreen('pause-screen');
+            this.showScreen('game-paused');
         }
     }
     
     resumeGame() {
         if (this.gameState === 'paused') {
-            this.showScreen('game-ui');
+            this.showScreen('game-playing');
             this.gameState = 'playing';
             this.lastTime = performance.now();
             this.gameLoop();
@@ -285,16 +301,21 @@ class Game {
     }
     
     gameLoop() {
-        if (this.gameState !== 'playing') return;
+        if (this.gameState === 'playing') {
+            const currentTime = performance.now();
+            const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.05);
+            this.lastTime = currentTime;
+            
+            this.update(deltaTime);
+        }
         
-        const currentTime = performance.now();
-        const deltaTime = Math.min((currentTime - this.lastTime) / 1000, 0.05);
-        this.lastTime = currentTime;
+        if (this.gameState === 'playing' || this.gameState === 'paused') {
+            this.render();
+        }
         
-        this.update(deltaTime);
-        this.render();
-        
-        this.animationFrameId = requestAnimationFrame(() => this.gameLoop());
+        if (this.gameState === 'playing' || this.gameState === 'paused') {
+            this.animationFrameId = requestAnimationFrame(() => this.gameLoop());
+        }
     }
     
     update(deltaTime) {
