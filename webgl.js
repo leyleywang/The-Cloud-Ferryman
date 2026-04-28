@@ -587,9 +587,11 @@ class WebGLRenderer {
         
         gl.useProgram(program);
         
-        const projection = this.createPerspectiveMatrix(Math.PI / 4, this.aspectRatio, 0.1, 100);
-        const view = this.createLookAtMatrix([0, 0, 0.1], [0, 0, 0], [0, 1, 0]);
-        const model = this.createScaleMatrix(50, 50, 50);
+        gl.disable(gl.DEPTH_TEST);
+        
+        const projection = this.createPerspectiveMatrix(Math.PI / 3, this.aspectRatio, 0.1, 100);
+        const view = this.createLookAtMatrix([0, 0, 15], [0, 0, 0], [0, 1, 0]);
+        const model = this.createScaleMatrix(80, 80, 80);
         
         gl.uniformMatrix4fv(gl.getUniformLocation(program, 'uProjection'), false, projection);
         gl.uniformMatrix4fv(gl.getUniformLocation(program, 'uView'), false, view);
@@ -608,6 +610,8 @@ class WebGLRenderer {
         gl.uniform2fv(gl.getUniformLocation(program, 'uSunPosition'), sunPosition);
         
         this.drawBuffer(this.buffers.quad, program, [1, 1, 1, 1]);
+        
+        gl.enable(gl.DEPTH_TEST);
     }
     
     drawBuffer(buffer, program, color) {
@@ -644,8 +648,8 @@ class WebGLRenderer {
         
         gl.useProgram(program);
         
-        const projection = this.createPerspectiveMatrix(Math.PI / 4, this.aspectRatio, 0.1, 100);
-        const view = this.createLookAtMatrix([0, 0, 8], [0, 0, 0], [0, 1, 0]);
+        const projection = this.createPerspectiveMatrix(Math.PI / 3, this.aspectRatio, 0.1, 100);
+        const view = this.createLookAtMatrix([0, 0, 12], [0, 0, 0], [0, 1, 0]);
         
         gl.uniformMatrix4fv(gl.getUniformLocation(program, 'uProjection'), false, projection);
         gl.uniformMatrix4fv(gl.getUniformLocation(program, 'uView'), false, view);
