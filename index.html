@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云朵摆渡 - The Cloud Ferryman</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- UI 层 -->
+        <div id="ui-overlay" class="ui-overlay">
+            <!-- 开始界面 -->
+            <div id="start-screen" class="screen active">
+                <div class="screen-content">
+                    <h1 class="game-title">云朵摆渡</h1>
+                    <p class="game-subtitle">The Cloud Ferryman</p>
+                    <p class="game-description">
+                        拖动云朵，把小动物们安全送到彩虹平台吧！<br>
+                        注意保持平衡，不要让它们掉下去哦~
+                    </p>
+                    <button id="startBtn" class="btn btn-primary">开始游戏</button>
+                </div>
+            </div>
+            
+            <!-- 关卡选择 -->
+            <div id="level-select" class="screen">
+                <div class="screen-content">
+                    <h2 class="level-title">选择关卡</h2>
+                    <div id="levelGrid" class="level-grid"></div>
+                    <button id="backToStart" class="btn btn-secondary">返回</button>
+                </div>
+            </div>
+            
+            <!-- 游戏界面UI -->
+            <div id="game-ui" class="game-ui">
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">关卡</span>
+                        <span id="currentLevel" class="info-value">1</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">动物</span>
+                        <span id="animalCount" class="info-value">0/3</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">分数</span>
+                        <span id="score" class="info-value">0</span>
+                    </div>
+                </div>
+                <button id="pauseBtn" class="btn-icon pause-btn">⏸️</button>
+            </div>
+            
+            <!-- 风效果提示 -->
+            <div id="wind-indicator" class="wind-indicator">
+                <div class="wind-arrow"></div>
+            </div>
+            
+            <!-- 暂停界面 -->
+            <div id="pause-screen" class="screen">
+                <div class="screen-content">
+                    <h2 class="level-title">游戏暂停</h2>
+                    <button id="resumeBtn" class="btn btn-primary">继续游戏</button>
+                    <button id="restartFromPause" class="btn btn-secondary">重新开始</button>
+                    <button id="toLevelSelect" class="btn btn-secondary">关卡选择</button>
+                </div>
+            </div>
+            
+            <!-- 过关界面 -->
+            <div id="win-screen" class="screen">
+                <div class="screen-content">
+                    <h2 class="win-title">🎉 恭喜过关！</h2>
+                    <p id="winMessage" class="win-message">所有小动物都安全到达了！</p>
+                    <div class="win-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">本关分数</span>
+                            <span id="levelScore" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">总分数</span>
+                            <span id="totalScore" class="stat-value">0</span>
+                        </div>
+                    </div>
+                    <button id="nextLevelBtn" class="btn btn-primary">下一关</button>
+                    <button id="replayLevelBtn" class="btn btn-secondary">重玩本关</button>
+                </div>
+            </div>
+            
+            <!-- 失败界面 -->
+            <div id="lose-screen" class="screen">
+                <div class="screen-content">
+                    <h2 class="lose-title">😢 挑战失败</h2>
+                    <p class="lose-message">小动物们都掉下去了...</p>
+                    <button id="retryBtn" class="btn btn-primary">再试一次</button>
+                    <button id="backToLevelSelect" class="btn btn-secondary">关卡选择</button>
+                </div>
+            </div>
+            
+            <!-- 全部通关界面 -->
+            <div id="complete-screen" class="screen">
+                <div class="screen-content">
+                    <h2 class="complete-title">🏆 全部通关！</h2>
+                    <p class="complete-message">
+                        你真是太棒了！<br>
+                        所有小动物都被安全送达啦！
+                    </p>
+                    <div class="complete-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">最终总分</span>
+                            <span id="finalScore" class="stat-value">0</span>
+                        </div>
+                    </div>
+                    <button id="playAgainBtn" class="btn btn-primary">再玩一次</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="webgl.js"></script>
+    <script src="physics.js"></script>
+    <script src="wind.js"></script>
+    <script src="levels.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
